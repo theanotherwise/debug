@@ -18,5 +18,10 @@ watch -n 1 "grep -E '^($PAT)' /proc/meminfo"
 
 # CPU
 ```bash
-watch -n 1 "(echo 'CPU  user  nice  system  idle  iowait  irq  softirq  steal  guest  guest_nice'; grep '^cpu' /proc/stat) | column -t"
+watch -n 1 "
+(
+  echo 'CPU  user  nice  system  idle  iowait  irq  softirq  steal  guest  guest_nice'
+  grep '^cpu' /proc/stat
+) | column -t
+"
 ```
