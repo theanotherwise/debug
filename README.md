@@ -1,5 +1,7 @@
 # debug
 
+# iostats
+
 ```bash
 iostat -dxm 1
 
@@ -16,7 +18,7 @@ PAT=$(printf '%s|' "${KEYS[@]}"); PAT=${PAT%|}
 watch -n 1 "grep -E '^($PAT)' /proc/meminfo"
 ```
 
-# CPU
+## CPU
 ```bash
 watch -n 1 "
 (
@@ -26,7 +28,8 @@ watch -n 1 "
 "
 ```
 
-# 
+## IRQ / SoftIRQ / Scheduler ###
+
 ```bash
 watch -n 1 "
 echo '### /proc/softirqs ###'
