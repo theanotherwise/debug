@@ -142,3 +142,21 @@ watch -n 1 "
 ```bash
 ps -p 4364 -o pid,ppid,nlwp,cmd,%cpu,%mem,stat,start,time
 ```
+
+```bash
+watch -n 1 "
+ps -eo user,pid,ppid,nlwp,%cpu,%mem,rss,vsz,stat,comm --sort=-%cpu \
+| head -n 20 \
+| column -t
+"
+```
+
+```bash
+PROC="nginx"
+
+watch -n 1 "
+ps -eo user,pid,ppid,nlwp,%cpu,%mem,rss,vsz,stat,comm \
+| awk -v p=\"$PROC\" 'NR==1 || tolower(\$10)==tolower(p)' \
+| column -t
+"
+```
