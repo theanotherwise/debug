@@ -1,4 +1,4 @@
-# iostats
+## iostats
 
 ```bash
 iostat -dxm 1
@@ -85,7 +85,7 @@ cat /proc/interrupts | column -t
 "
 ```
 
-# Interfaces
+## Interfaces
 
 ```bash
 watch -n 1 '
@@ -135,4 +135,10 @@ watch -n 1 "
 ) | column -t
 "
 
+```
+
+## Processes
+
+```bash
+ps -p 4364 -o pid,ppid,nlwp,cmd,%cpu,%mem,stat,start,time
 ```
