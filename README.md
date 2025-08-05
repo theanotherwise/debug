@@ -73,3 +73,36 @@ echo '### /proc/interrupts ###'
 cat /proc/interrupts | column -t
 "
 ```
+
+# Interfaces
+
+```bash
+watch -n 1 '
+awk "
+BEGIN {
+    headers = \"Iface RX_B RX_Pk RX_E RX_D RX_F RX_Fr RX_C RX_M TX_B TX_Pk TX_E TX_D TX_F TX_Co TX_Ca TX_Cm\";
+    split(headers, H);
+    for (i in H) W[i] = length(H[i]);
+}
+NR > 2 {
+    gsub(\":\", \"\", \$1);
+    if (NF < length(H)) next;
+    for (i = 1; i <= length(H); i++) {
+        D[NR, i] = \$i;
+        if (length(\$i) > W[i]) W[i] = length(\$i);
+    }
+}
+END {
+    for (i = 1; i <= length(H); i++)
+        printf \"%-\" W[i]+1 \"s\", H[i];
+    print \"\";
+    for (r = 3; r <= NR; r++) {
+        for (i = 1; i <= length(H); i++)
+            printf \"%-\" W[i]+1 \"s\", D[r, i];
+        print \"\";
+    }
+}
+" /proc/net/dev
+'
+
+```
