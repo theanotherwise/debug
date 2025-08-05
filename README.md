@@ -115,5 +115,24 @@ END {
 }
 " /proc/net/dev
 '
+```
+
+```bash
+watch -n 1 "
+(
+  awk '
+    /^Tcp:/ {
+      sub(/^Tcp:[[:space:]]*/, \"\")
+      if (++n == 1) {
+        hdr = \$0
+      } else if (n == 2) {
+        print hdr
+        print \$0
+        exit
+      }
+    }
+  ' /proc/net/snmp
+) | column -t
+"
 
 ```
