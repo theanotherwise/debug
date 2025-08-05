@@ -25,3 +25,21 @@ watch -n 1 "
 ) | column -t
 "
 ```
+
+# 
+```bash
+watch -n 1 "
+echo '### /proc/softirqs ###'
+cat /proc/softirqs | column -t
+echo
+echo '### /proc/schedstat ###'
+cat /proc/schedstat | column -t
+"
+```
+
+```bash
+watch -n 1 "
+echo '### /proc/interrupts ###'
+cat /proc/interrupts | column -t
+"
+```
