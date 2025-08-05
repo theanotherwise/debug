@@ -140,7 +140,7 @@ watch -n 1 "
 ## Processes
 
 ```bash
-ps -p 4364 -o pid,ppid,nlwp,cmd,%cpu,%mem,stat,start,time
+ps -o pid,ppid,nlwp,cmd,%cpu,%mem,stat,start,time -p 4364 
 ```
 
 ```bash
