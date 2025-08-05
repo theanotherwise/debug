@@ -144,19 +144,31 @@ ps -o pid,ppid,nlwp,cmd,%cpu,%mem,stat,start,time -p 4364
 ```
 
 ```bash
-watch -n 1 "
-ps -eo user,pid,ppid,nlwp,%cpu,%mem,rss,vsz,stat,comm --sort=-%cpu \
-| head -n 20 \
-| column -t
-"
+watch -n 1 '
+(
+  echo USER PID PPID NLWP %CPU %MEM RSS VSZ STAT COMM OFILES
+  for pid in $(ps -eo pid --sort=-%cpu | head -n 21 | tail -n +2); do
+    ps -p $pid -o user=,pid=,ppid=,nlwp=,%cpu=,%mem=,rss=,vsz=,stat=,comm= 2>/dev/null | \
+    while read u p pp nl c m r v s n; do
+      of=$(ls /proc/$p/fd 2>/dev/null | wc -l)
+      printf "%s %s %s %s %s %s %s %s %s %s %s\n" "$u" "$p" "$pp" "$nl" "$c" "$m" "$r" "$v" "$s" "$n" "$of"
+    done
+  done
+) | column -t'
 ```
 
 ```bash
 PROC="nginx"
 
 watch -n 1 "
-ps -eo user,pid,ppid,nlwp,%cpu,%mem,rss,vsz,stat,comm \
-| awk -v p=\"$PROC\" 'NR==1 || tolower(\$10)==tolower(p)' \
-| column -t
-"
+(
+  echo USER PID PPID NLWP %CPU %MEM RSS VSZ STAT COMM OFILES
+  for pid in \$(ps -eo pid,comm --no-headers | awk -v p=\"$PROC\" '\$2 == p {print \$1}'); do
+    ps -p \$pid -o user=,pid=,ppid=,nlwp=,%cpu=,%mem=,rss=,vsz=,stat=,comm= 2>/dev/null | \
+    while read u p pp nl c m r v s n; do
+      of=\$(ls /proc/\$p/fd 2>/dev/null | wc -l)
+      printf \"%s %s %s %s %s %s %s %s %s %s %s\n\" \"\$u\" \"\$p\" \"\$pp\" \"\$nl\" \"\$c\" \"\$m\" \"\$r\" \"\$v\" \"\$s\" \"\$n\" \"\$of\"
+    done
+  done
+) | column -t"
 ```
