@@ -3,7 +3,7 @@
 ```bash
 iostat -dxm 1
 
-# Dirty
+# Memory
 KEYS0=(Cached Buffers SwapCached)
 KEYS1=(MemFree MemAvailable)
 KEYS2=(AnonPages AnonHugePages Mapped Shmem
@@ -16,3 +16,10 @@ PAT=$(printf '%s|' "${KEYS[@]}"); PAT=${PAT%|}
 watch -n 1 "grep -E '^($PAT)' /proc/meminfo"
 ```
 
+# CPU
+```bash
+(
+echo "CPU  user  nice  system  idle  iowait  irq  softirq  steal  guest  guest_nice"
+grep '^cpu' /proc/stat
+) | column -t
+```
