@@ -46,6 +46,17 @@ END {
 ```
 
 ## CPU
+
+```bash
+watch -n 1 "
+(
+  echo 'Load1 Load5 Load15 Running/Total PID'
+  awk '{print \$1, \$2, \$3, \$4, \$5}' /proc/loadavg
+) | column -t
+"
+
+```
+
 ```bash
 watch -n 1 "
 (
